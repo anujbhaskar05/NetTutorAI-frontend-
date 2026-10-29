@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import api from "./api.js";
-import "./chatbot.css";
+import "./Chatbot.css";
 
 export default function Chatbot() {
   const [message, setMessage] = useState("");
