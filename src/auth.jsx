@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+
 import api from "./api.js";
 
 const AuthContext = createContext(null);
@@ -8,20 +15,29 @@ export function AuthProvider({ children }) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    if (!localStorage.getItem("nettutor_token")) {
+    const token = localStorage.getItem("nettutor_token");
+
+    if (!token) {
       setReady(true);
       return;
     }
 
     api
-      .get("https://nettutorai-computer-network-instructor-emga.onrender.com/auth/me")
-      .then((r) => setUser(r.data.user))
-      .catch(() => localStorage.removeItem("nettutor_token"))
-      .finally(() => setReady(true));
+      .get("/auth/me")
+      .then((response) => {
+        setUser(response.data.user);
+      })
+      .catch(() => {
+        localStorage.removeItem("nettutor_token");
+        setUser(null);
+      })
+      .finally(() => {
+        setReady(true);
+      });
   }, []);
 
   async function login(email, password) {
-    const { data } = await api.post("https://nettutorai-computer-network-instructor-emga.onrender.com/auth/login", {
+    const { data } = await api.post("/auth/login", {
       email,
       password,
     });
@@ -31,7 +47,7 @@ export function AuthProvider({ children }) {
   }
 
   async function register(name, email, password) {
-    const { data } = await api.post("https://nettutorai-computer-network-instructor-emga.onrender.com/auth/register", {
+    const { data } = await api.post("/auth/register", {
       name,
       email,
       password,
