@@ -14,14 +14,14 @@ export function AuthProvider({ children }) {
     }
 
     api
-      .get("/api/auth/me")
+      .get("https://nettutorai-computer-network-instructor-emga.onrender.com/auth/me")
       .then((r) => setUser(r.data.user))
       .catch(() => localStorage.removeItem("nettutor_token"))
       .finally(() => setReady(true));
   }, []);
 
   async function login(email, password) {
-    const { data } = await api.post("/api/auth/login", {
+    const { data } = await api.post("https://nettutorai-computer-network-instructor-emga.onrender.com/auth/login", {
       email,
       password,
     });
@@ -31,7 +31,7 @@ export function AuthProvider({ children }) {
   }
 
   async function register(name, email, password) {
-    const { data } = await api.post("/api/auth/register", {
+    const { data } = await api.post("https://nettutorai-computer-network-instructor-emga.onrender.com/auth/register", {
       name,
       email,
       password,
